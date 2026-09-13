@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "recordType": "AIRLINE",
+        "airlineName": "British Airways"
+    },
+    {
+        "id": 2,
+        "recordType": "AIRLINE",
+        "airlineName": "Lufthansa"
+    },
+    {
+        "id": 3,
+        "recordType": "AIRLINE",
+        "airlineName": "Air France"
+    },
+    {
+        "id": 4,
+        "recordType": "AIRLINE",
+        "airlineName": "KLM Royal Dutch Airlines"
+    },
+    {
+        "id": 5,
+        "recordType": "AIRLINE",
+        "airlineName": "Emirates"
+    }
+]

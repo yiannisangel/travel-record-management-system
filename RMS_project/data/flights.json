@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "recordType": "FLIGHT",
+        "clientId": 1,
+        "airlineId": 1,
+        "date": "2026-11-15T09:30:00",
+        "startCity": "London",
+        "endCity": "New York"
+    },
+    {
+        "id": 2,
+        "recordType": "FLIGHT",
+        "clientId": 1,
+        "airlineId": 5,
+        "date": "2026-12-10T18:45:00",
+        "startCity": "London",
+        "endCity": "Dubai"
+    },
+    {
+        "id": 3,
+        "recordType": "FLIGHT",
+        "clientId": 2,
+        "airlineId": 2,
+        "date": "2027-01-05T07:15:00",
+        "startCity": "Frankfurt",
+        "endCity": "Tokyo"
+    },
+    {
+        "id": 4,
+        "recordType": "FLIGHT",
+        "clientId": 3,
+        "airlineId": 3,
+        "date": "2027-02-20T13:25:00",
+        "startCity": "Paris",
+        "endCity": "Montreal"
+    },
+    {
+        "id": 5,
+        "recordType": "FLIGHT",
+        "clientId": 4,
+        "airlineId": 4,
+        "date": "2027-03-08T11:00:00",
+        "startCity": "Amsterdam",
+        "endCity": "Rome"
+    },
+    {
+        "id": 6,
+        "recordType": "FLIGHT",
+        "clientId": 5,
+        "airlineId": 1,
+        "date": "2027-04-12T16:20:00",
+        "startCity": "London",
+        "endCity": "Madrid"
+    },
+    {
+        "id": 7,
+        "recordType": "FLIGHT",
+        "clientId": 2,
+        "airlineId": 5,
+        "date": "2027-05-02T21:10:00",
+        "startCity": "Dubai",
+        "endCity": "Singapore"
+    },
+    {
+        "id": 8,
+        "recordType": "FLIGHT",
+        "clientId": 3,
+        "airlineId": 2,
+        "date": "2027-06-17T08:40:00",
+        "startCity": "Munich",
+        "endCity": "Bangkok"
+    }
+]

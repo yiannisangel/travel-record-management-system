@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "recordType": "CLIENT",
+        "clientName": "John Smith",
+        "email": "john.smith@example.com",
+        "addressLineOne": "12 High Street",
+        "addressLineTwo": "Flat 3",
+        "addressLineThree": "",
+        "city": "Oxford",
+        "state": "Oxfordshire",
+        "zipCode": "OX1 1AA",
+        "country": "United Kingdom",
+        "phoneNumber": "+441865123456"
+    },
+    {
+        "id": 2,
+        "recordType": "CLIENT",
+        "clientName": "Emma Johnson",
+        "email": "emma.johnson@example.com",
+        "addressLineOne": "45 Queen Street",
+        "addressLineTwo": "",
+        "addressLineThree": "",
+        "city": "London",
+        "state": "Greater London",
+        "zipCode": "SW1A 1AA",
+        "country": "United Kingdom",
+        "phoneNumber": "+442012345678"
+    },
+    {
+        "id": 3,
+        "recordType": "CLIENT",
+        "clientName": "William Brown",
+        "email": "william.brown@example.com",
+        "addressLineOne": "8 Market Road",
+        "addressLineTwo": "",
+        "addressLineThree": "",
+        "city": "Manchester",
+        "state": "Greater Manchester",
+        "zipCode": "M1 1AE",
+        "country": "United Kingdom",
+        "phoneNumber": "+441612345678"
+    },
+    {
+        "id": 4,
+        "recordType": "CLIENT",
+        "clientName": "Sophia Davis",
+        "email": "sophia.davis@example.com",
+        "addressLineOne": "22 Station Lane",
+        "addressLineTwo": "Apartment 7",
+        "addressLineThree": "",
+        "city": "Birmingham",
+        "state": "West Midlands",
+        "zipCode": "B1 1BB",
+        "country": "United Kingdom",
+        "phoneNumber": "+441214567890"
+    },
+    {
+        "id": 5,
+        "recordType": "CLIENT",
+        "clientName": "James Wilson",
+        "email": "james.wilson@example.com",
+        "addressLineOne": "91 King Road",
+        "addressLineTwo": "",
+        "addressLineThree": "",
+        "city": "Bristol",
+        "state": "Bristol",
+        "zipCode": "BS1 4DJ",
+        "country": "United Kingdom",
+        "phoneNumber": "+441179876543"
+    }
+]
