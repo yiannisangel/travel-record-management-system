@@ -10,10 +10,13 @@ from datetime import date
 
 class ValidationError(Exception):
     """Raised when validation fails."""
-    pass
 
 
 class Validator:
+    """
+    Provides validation methods used throughout the
+    Specialist Travel Agent Record management system.
+    """
 
     EMAIL_PATTERN = re.compile(
         r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
@@ -88,11 +91,23 @@ class Validator:
         Validate that flight date is future.
         """
 
-        if flight_date <= date.today():
+        try:
+            if isinstance(flight_date, str):
+                flight_date = (
+                    datetime.fromisoformat(
+                        flight_date
+                    ).date()
+                )
+        except ValueError as ex:
+            raise ValidationError(
+                "Invalid flight date format."
+            ) from ex
 
+        if flight_date <= date.today():
             raise ValidationError(
                 "Flight date must be in the future."
             )
+
 
     @staticmethod
     def validate_duplicate(

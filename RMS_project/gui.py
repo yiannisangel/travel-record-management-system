@@ -18,7 +18,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 
-
 # ======================================================
 # HLD FIELD DEFINITIONS
 # ======================================================
@@ -48,7 +47,6 @@ FLIGHT_FIELDS = [
     ("endCity", "Destination", "entry")
 ]
 
-
 CLIENT_COLUMNS = [
     ("id", "ID", 60),
     ("clientName", "Client Name", 180),
@@ -70,7 +68,6 @@ FLIGHT_COLUMNS = [
     ("endCity", "Destination", 150)
 ]
 
-
 # ======================================================
 # GENERIC RECORD TAB
 # ======================================================
@@ -91,13 +88,15 @@ class RecordTab(ttk.Frame):
         self.app = app
 
         self.selected_id = None
-
         self.entries = {}
-
+        self.tree = None
         self.search_var = tk.StringVar()
 
-        self.build_ui()
+        self.clients_lookup = {}
+        self.airlines_lookup = {}
 
+        self.record_label = tk.StringVar(value="")
+        self.build_ui()
         self.refresh_tree()
 
     def build_ui(self):
@@ -168,9 +167,7 @@ class RecordTab(ttk.Frame):
 
             self.entries[field] = widget
 
-        self.record_label = tk.StringVar(
-            value="New record"
-        )
+        self.record_label.set("New record")
 
         ttk.Label(
             form,
@@ -183,6 +180,9 @@ class RecordTab(ttk.Frame):
         )
 
     def build_buttons(self):
+        """
+        Creates Create, Update, Delete and Clear actions.
+        """
 
         frame = ttk.Frame(self)
         frame.pack(fill=tk.X, pady=8)
@@ -212,6 +212,9 @@ class RecordTab(ttk.Frame):
         ).pack(side=tk.LEFT, padx=3)
 
     def build_search(self):
+        """
+        Creates a reusable search interface shared by all record types.
+        """
 
         frame = ttk.LabelFrame(
             self,
@@ -240,6 +243,11 @@ class RecordTab(ttk.Frame):
         ).pack(side=tk.LEFT)
 
     def build_tree(self):
+        """
+        Constructs a Treeview control and vertical scrollbar.
+        Treeview was selected because it provides a flexible
+        tabular representation of records
+        """
 
         frame = ttk.Frame(self)
         frame.pack(fill=tk.BOTH, expand=True)
@@ -290,6 +298,11 @@ class RecordTab(ttk.Frame):
         )
 
     def get_form_values(self):
+        """
+        Extracts values from widgets and returns a dictionary.
+        Dictionaries provide clear field-name mapping and support
+        communication with the controller layer.
+        """
 
         values = {}
 
@@ -305,6 +318,9 @@ class RecordTab(ttk.Frame):
         return values
 
     def clear_form(self):
+        """
+        Resets form controls and selected identifiers.
+        """
 
         self.selected_id = None
 
@@ -329,6 +345,9 @@ class RecordTab(ttk.Frame):
                 pass
 
     def populate_tree(self, records):
+        """
+        Clears the existing Treeview contents and inserts refreshed records.
+        """
 
         for row in self.tree.get_children():
             self.tree.delete(row)
@@ -347,7 +366,10 @@ class RecordTab(ttk.Frame):
             )
 
     def refresh_tree(self):
-
+        """
+        Obtains data from the controller and updates both the data grid and
+        application statistics.
+        """
         records = self.controller.get_records(
             self.record_type
         )
@@ -357,6 +379,10 @@ class RecordTab(ttk.Frame):
         self.app.update_status_counts()
 
     def on_create(self):
+        """
+        Obtains data from the controller and updates both the data grid and
+        and provides user feedback.
+        """
 
         try:
 
@@ -378,7 +404,7 @@ class RecordTab(ttk.Frame):
                 "Record created."
             )
 
-        except Exception as ex:
+        except ValueError as ex:
 
             messagebox.showerror(
                 "Error",
@@ -386,6 +412,9 @@ class RecordTab(ttk.Frame):
             )
 
     def on_update(self):
+        """
+        Validates selection, submits modified values and refreshes the display.
+        """
 
         if self.selected_id is None:
 
@@ -406,7 +435,7 @@ class RecordTab(ttk.Frame):
 
             self.refresh_tree()
 
-        except Exception as ex:
+        except ValueError as ex:
 
             messagebox.showerror(
                 "Error",
@@ -414,6 +443,9 @@ class RecordTab(ttk.Frame):
             )
 
     def on_delete(self):
+        """
+        Confirms deletion before requesting removal through the controller. 
+        """
 
         if self.selected_id is None:
             return
@@ -434,6 +466,9 @@ class RecordTab(ttk.Frame):
         self.clear_form()
 
     def on_search(self):
+        """
+        Delegates search operations to the controller. 
+        """
 
         records = self.controller.search(
             self.record_type,
@@ -442,7 +477,7 @@ class RecordTab(ttk.Frame):
 
         self.populate_tree(records)
 
-    def on_select(self, event):
+    def on_select(self, _event):
         """
         Load selected record into the form.
         """
@@ -529,28 +564,47 @@ class RecordTab(ttk.Frame):
                 try:
                     widget.set_date(value)
 
-                except Exception:
-                    pass
+                except ValueError as ex:
+                    print(ex)
 
- 
+
 # ======================================================
 # CLIENT TAB
 # ======================================================
 
 class ClientTab(RecordTab):
-
+    """
+    ClientTab specialises RecordTab through configuration rather than
+    extensive code changes. It refreshes flight comboboxes when client
+    data changes.
+    """
     record_type = "CLIENT"
-
     fields = CLIENT_FIELDS
-
     columns = CLIENT_COLUMNS
 
+    def refresh_tree(self):
+        super().refresh_tree()
+
+        print("CLIENT REFRESH")
+
+        if hasattr(self.app, "flight_tab"):
+            print("CALLING RELOAD")
+
+            try:
+                self.app.flight_tab.reload_comboboxes()
+                print("RELOAD COMPLETED")
+            except ValueError as ex:
+                print("RELOAD FAILED", ex)
 
 # ======================================================
 # AIRLINE TAB
 # ======================================================
 
 class AirlineTab(RecordTab):
+    """
+    AirlineTab mirrors ClientTab and maintains flight-airline
+    consistency after updates.
+    """
 
     record_type = "AIRLINE"
 
@@ -569,6 +623,11 @@ class AirlineTab(RecordTab):
 # ======================================================
 
 class FlightTab(RecordTab):
+    """
+    FlightTab contains the most domain-specific logic. It loads airline
+    and client lookup values, translates identifiers into human-readable
+    names and implements enriched searching.
+    """
 
     record_type = "FLIGHT"
 
@@ -582,15 +641,19 @@ class FlightTab(RecordTab):
         the flight dropdowns.
         """
 
+        print("reload_comboboxes called")
+
         clients = self.controller.list_clients()
+
+        print("Clients loaded:", clients)
 
         self.clients_lookup = {
             str(c["id"]): f'{c["id"]} - {c["clientName"]}'
             for c in clients
         }
 
-        self.entries["clientId"]["values"] = list(
-            self.clients_lookup.values()
+        self.entries["clientId"].configure(
+            values=list(self.clients_lookup.values())
         )
 
         airlines = self.controller.list_airlines()
@@ -677,11 +740,64 @@ class FlightTab(RecordTab):
 
         return values
 
+    def on_search(self):
+        """
+        Search flights using client names,
+        airline names and flight details.
+        """
+
+        search_text = self.search_var.get().lower().strip()
+
+        records = self.controller.get_records(
+            self.record_type
+        )
+
+        clients = {
+            c["id"]: c["clientName"].lower()
+            for c in self.controller.list_clients()
+        }
+
+        airlines = {
+            a["id"]: a["airlineName"].lower()
+            for a in self.controller.list_airlines()
+        }
+
+        filtered = []
+
+        for record in records:
+
+            client_name = clients.get(
+                record["clientId"],
+                ""
+            )
+
+            airline_name = airlines.get(
+                record["airlineId"],
+                ""
+            )
+
+            combined_text = (
+                f"{client_name} "
+                f"{airline_name} "
+                f"{record['startCity']} "
+                f"{record['endCity']} "
+                f"{record['date']}"
+            ).lower()
+
+            if search_text in combined_text:
+                filtered.append(record)
+
+        self.populate_tree(filtered)
+
 # ======================================================
 # MAIN APPLICATION
 # ======================================================
 
 class TravelAgentApp(tk.Tk):
+    """
+    Acts as the application shell. Responsibilities include layout management,
+    navigation, menu creation, status updates and shutdown processing.
+    """
 
     def __init__(self, controller):
 
@@ -707,6 +823,9 @@ class TravelAgentApp(tk.Tk):
         )
 
     def build_layout(self):
+        """
+        Creates sidebar navigation, content area, status bar and tab instances.
+        """
 
         body = ttk.Frame(self)
         body.pack(fill=tk.BOTH, expand=True)
@@ -820,8 +939,6 @@ class TravelAgentApp(tk.Tk):
 
         self.config(menu=menubar)
 
-        print
-
     def show_about(self):
         """
         Display About dialog.
@@ -840,12 +957,17 @@ class TravelAgentApp(tk.Tk):
         )
 
     def show_tab(self, tab):
+        """
+        Display the selected application tab and refresh its data.
+        """
 
         tab.tkraise()
-
         tab.refresh_tree()
 
     def update_status_counts(self):
+        """
+        Update the status bar with current record counts.
+        """
 
         counts = self.controller.get_counts()
 
@@ -856,6 +978,7 @@ class TravelAgentApp(tk.Tk):
         )
 
     def on_close(self):
+        """Close the application safely."""
 
         self.controller.save()
 
@@ -867,6 +990,7 @@ class TravelAgentApp(tk.Tk):
 # ======================================================
 
 def main():
+    """Application entry point."""
 
     from storage import JsonStorage
     from controller import RecordController
@@ -886,5 +1010,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
