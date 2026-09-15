@@ -16,7 +16,11 @@ No storage access.
 
 import tkinter as tk
 from tkinter import ttk, messagebox
+
 from tkcalendar import DateEntry
+
+from controller import RecordController
+from storage import JsonStorage
 
 # ======================================================
 # HLD FIELD DEFINITIONS
@@ -109,9 +113,7 @@ class RecordTab(ttk.Frame):
         self.build_tree()
 
     def build_form(self):
-        """
-        Build data entry form.
-        """
+        """Build data entry form."""
 
         form = ttk.LabelFrame(
             self,
@@ -560,7 +562,6 @@ class RecordTab(ttk.Frame):
                     widget.set(str(value))
 
             elif widget_type == "date":
-
                 try:
                     widget.set_date(value)
 
@@ -589,7 +590,6 @@ class ClientTab(RecordTab):
 
         if hasattr(self.app, "flight_tab"):
             print("CALLING RELOAD")
-
             try:
                 self.app.flight_tab.reload_comboboxes()
                 print("RELOAD COMPLETED")
@@ -607,9 +607,7 @@ class AirlineTab(RecordTab):
     """
 
     record_type = "AIRLINE"
-
     fields = AIRLINE_FIELDS
-
     columns = AIRLINE_COLUMNS
 
     def refresh_tree(self):
@@ -630,9 +628,7 @@ class FlightTab(RecordTab):
     """
 
     record_type = "FLIGHT"
-
     fields = FLIGHT_FIELDS
-
     columns = FLIGHT_COLUMNS
 
     def reload_comboboxes(self):
@@ -992,18 +988,9 @@ class TravelAgentApp(tk.Tk):
 def main():
     """Application entry point."""
 
-    from storage import JsonStorage
-    from controller import RecordController
-
     storage = JsonStorage()
-
-    controller = RecordController(
-        storage
-    )
-
-    app = TravelAgentApp(
-        controller
-    )
+    controller = RecordController(storage)
+    app = TravelAgentApp(controller)
 
     app.mainloop()
 

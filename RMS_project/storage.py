@@ -48,45 +48,63 @@ class JsonStorage:
         return max(record["id"] for record in records) + 1
 
     def get_all_clients(self):
+        """Retrieves all client records from storage."""
+
         return self._load_json(self.client_file)
 
     def get_all_airlines(self):
+        """Retrieves all airline records from storage."""
+
         return self._load_json(self.airline_file)
 
     def get_all_flights(self):
+        """Retrieves all flight records from storage."""
+
         return self._load_json(self.flight_file)
 
     def get_client(self, client_id):
+        """Retrieve a client record by its identifier."""
+
         for client in self.get_all_clients():
             if client["id"] == client_id:
                 return client
         return None
 
     def get_airline(self, airline_id):
+        """Retrieve an airline record by its identifier."""
+
         for airline in self.get_all_airlines():
             if airline["id"] == airline_id:
                 return airline
         return None
 
     def get_flight(self, flight_id):
+        """Retrieve a flight record by its identifier."""
+
         for flight in self.get_all_flights():
             if flight["id"] == flight_id:
                 return flight
         return None
 
     def client_exists(self, client_id):
+        """Determine if a client record exists."""
+
         return any(
             client["id"] == client_id
             for client in self.get_all_clients()
         )
 
     def airline_exists(self, airline_id):
+        """Determine if an airline record exists."""
+
         return any(
             airline["id"] == airline_id
             for airline in self.get_all_airlines()
         )
 
     def insert_client(self, client):
+        """Create and store a new client record."""
+
         records = self.get_all_clients()
         client["id"] = self._generate_id(records)
         client["recordType"] = "CLIENT"
@@ -95,6 +113,8 @@ class JsonStorage:
         return client
 
     def insert_airline(self, airline):
+        """Create and store a new airline record."""
+
         records = self.get_all_airlines()
         airline["id"] = self._generate_id(records)
         airline["recordType"] = "AIRLINE"
@@ -103,6 +123,8 @@ class JsonStorage:
         return airline
 
     def insert_flight(self, flight):
+        """Create and store a new flight record."""
+
         records = self.get_all_flights()
         flight["id"] = self._generate_id(records)
         flight["recordType"] = "FLIGHT"
@@ -111,6 +133,8 @@ class JsonStorage:
         return flight
 
     def update_client(self, record_id, updated_record):
+        """Update an existing client record."""
+
         records = self.get_all_clients()
 
         for index, record in enumerate(records):
@@ -124,6 +148,8 @@ class JsonStorage:
         return None
 
     def update_airline(self, record_id, updated_record):
+        """Update an existing airline record."""
+
         records = self.get_all_airlines()
 
         for index, record in enumerate(records):
@@ -137,6 +163,8 @@ class JsonStorage:
         return None
 
     def update_flight(self, record_id, updated_record):
+        """Update an existing flight record."""
+
         records = self.get_all_flights()
 
         for index, record in enumerate(records):
@@ -150,6 +178,8 @@ class JsonStorage:
         return None
 
     def delete_client(self, record_id):
+        """Delete a client record by its identifier."""
+
         records = [
             record
             for record in self.get_all_clients()
@@ -160,6 +190,8 @@ class JsonStorage:
         return True
 
     def delete_airline(self, record_id):
+        """Delete an airline record by its identifier."""
+
         records = [
             record
             for record in self.get_all_airlines()
@@ -170,6 +202,8 @@ class JsonStorage:
         return True
 
     def delete_flight(self, record_id):
+        """Delete a flight record by its identifier."""
+
         records = [
             record
             for record in self.get_all_flights()
@@ -180,6 +214,8 @@ class JsonStorage:
         return True
 
     def search(self, record_type, search_text):
+        """Search records of a specified type."""
+
         search_text = (search_text or "").lower().strip()
 
         if record_type == "CLIENT":
@@ -201,5 +237,6 @@ class JsonStorage:
         ]
 
     def save(self):
-        return True
+        """Persist appliaction data."""
 
+        return True
