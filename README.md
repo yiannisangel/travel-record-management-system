@@ -22,6 +22,16 @@ The application uses a **list of dictionaries** as its internal record represent
 Information relating to the design of each module, design decisions, and testing is available in the [`docs`](docs/) folder in this repository.
 
 ---
+## Team Members
+
+| Team Member | Role |
+|---|---|
+| **Reem Ajishi** | GUI/UX Designer |
+| **Ioannis Angelikas** | Project Manager |
+| **Rodrigo de Almeida Barreto** | Programmer |
+| **Gielen Rojas Lopez** | Tester |
+
+---
 
 ## System Structure
 
