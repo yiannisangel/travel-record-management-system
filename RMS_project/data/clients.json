@@ -1,17 +1,17 @@
 [
     {
-        "id": 1,
-        "recordType": "CLIENT",
         "clientName": "John Smith",
         "email": "john.smith@example.com",
         "addressLineOne": "12 High Street",
         "addressLineTwo": "Flat 3",
         "addressLineThree": "",
-        "city": "Oxford",
+        "city": "Didcot",
         "state": "Oxfordshire",
         "zipCode": "OX1 1AA",
         "country": "United Kingdom",
-        "phoneNumber": "+441865123456"
+        "phoneNumber": "+441865123456",
+        "id": 1,
+        "recordType": "CLIENT"
     },
     {
         "id": 2,
@@ -68,5 +68,19 @@
         "zipCode": "BS1 4DJ",
         "country": "United Kingdom",
         "phoneNumber": "+441179876543"
+    },
+    {
+        "clientName": "John Doe",
+        "email": "john.doe@examples.com",
+        "addressLineOne": "Wycinbe Close",
+        "addressLineTwo": "Eastrop",
+        "addressLineThree": "",
+        "city": "Basingtoke",
+        "state": "Hampshire",
+        "zipCode": "RG21 7DJ",
+        "country": "United Kingdom",
+        "phoneNumber": "+441256468864",
+        "id": 6,
+        "recordType": "CLIENT"
     }
 ]
