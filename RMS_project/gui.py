@@ -3,15 +3,6 @@ gui.py
 
 Presentation layer for the Specialist Travel Agent
 Record Management System.
-
-Responsibilities:
-    - Capture user input
-    - Display records
-    - Call controller methods
-    - Display status and messages
-
-No validation logic.
-No storage access.
 """
 
 import tkinter as tk
@@ -20,6 +11,7 @@ from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 
 from controller import RecordController
+from validation import ValidationError
 from storage import JsonStorage
 
 # ======================================================
@@ -27,28 +19,28 @@ from storage import JsonStorage
 # ======================================================
 
 CLIENT_FIELDS = [
-    ("clientName", "Client Name", "entry"),
+    ("clientName", "Client Name *", "entry"),
     ("email", "Email", "entry"),
     ("addressLineOne", "Address Line 1", "entry"),
     ("addressLineTwo", "Address Line 2", "entry"),
     ("addressLineThree", "Address Line 3", "entry"),
     ("city", "City", "entry"),
     ("state", "County / State", "entry"),
-    ("zipCode", "Postcode", "entry"),
+    ("zipCode", "Postcode *", "entry"),
     ("country", "Country", "entry"),
-    ("phoneNumber", "Telephone", "entry")
+    ("phoneNumber", "Telephone *", "entry")
 ]
 
 AIRLINE_FIELDS = [
-    ("airlineName", "Airline Name", "entry")
+    ("airlineName", "Airline Name *", "entry")
 ]
 
 FLIGHT_FIELDS = [
-    ("clientId", "Client", "combobox"),
-    ("airlineId", "Airline", "combobox"),
-    ("date", "Flight Date", "date"),
-    ("startCity", "Origin", "entry"),
-    ("endCity", "Destination", "entry")
+    ("clientId", "Client *", "combobox"),
+    ("airlineId", "Airline *", "combobox"),
+    ("date", "Flight Date *", "date"),
+    ("startCity", "Origin *", "entry"),
+    ("endCity", "Destination *", "entry")
 ]
 
 CLIENT_COLUMNS = [
@@ -173,9 +165,19 @@ class RecordTab(ttk.Frame):
 
         ttk.Label(
             form,
-            textvariable=self.record_label
+            text="* Mandatory fields"
         ).grid(
             row=len(self.fields),
+            column=0,
+            columnspan=2,
+            sticky="w"
+        )
+
+        ttk.Label(
+            form,
+            textvariable=self.record_label
+        ).grid(
+            row=len(self.fields) + 1,
             column=0,
             columnspan=2,
             sticky="w"
@@ -263,15 +265,9 @@ class RecordTab(ttk.Frame):
 
         for key, heading, width in self.columns:
 
-            self.tree.heading(
-                key,
-                text=heading
-            )
+            self.tree.heading(key, text=heading)
 
-            self.tree.column(
-                key,
-                width=width
-            )
+            self.tree.column(key, width=width)
 
         self.tree.pack(
             side=tk.LEFT,
@@ -406,7 +402,7 @@ class RecordTab(ttk.Frame):
                 "Record created."
             )
 
-        except ValueError as ex:
+        except (ValueError, ValidationError) as ex:
 
             messagebox.showerror(
                 "Error",
@@ -437,7 +433,7 @@ class RecordTab(ttk.Frame):
 
             self.refresh_tree()
 
-        except ValueError as ex:
+        except (ValueError, ValidationError) as ex:
 
             messagebox.showerror(
                 "Error",

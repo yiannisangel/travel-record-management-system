@@ -68,19 +68,5 @@
         "zipCode": "BS1 4DJ",
         "country": "United Kingdom",
         "phoneNumber": "+441179876543"
-    },
-    {
-        "clientName": "John Doe",
-        "email": "john.doe@examples.com",
-        "addressLineOne": "Wycinbe Close",
-        "addressLineTwo": "Eastrop",
-        "addressLineThree": "",
-        "city": "Basingtoke",
-        "state": "Hampshire",
-        "zipCode": "RG21 7DJ",
-        "country": "United Kingdom",
-        "phoneNumber": "+441256468864",
-        "id": 6,
-        "recordType": "CLIENT"
     }
 ]

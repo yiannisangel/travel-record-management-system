@@ -20,8 +20,8 @@
         "airlineName": "KLM Royal Dutch Airlines"
     },
     {
+        "airlineName": "Emirates",
         "id": 5,
-        "recordType": "AIRLINE",
-        "airlineName": "Emirates"
+        "recordType": "AIRLINE"
     }
 ]

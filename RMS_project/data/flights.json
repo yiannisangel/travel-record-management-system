@@ -54,13 +54,13 @@
         "endCity": "Madrid"
     },
     {
-        "id": 7,
-        "recordType": "FLIGHT",
         "clientId": 2,
         "airlineId": 5,
-        "date": "2027-05-02T21:10:00",
+        "date": "2027-05-05T00:00:00",
         "startCity": "Dubai",
-        "endCity": "Singapore"
+        "endCity": "Singapore",
+        "id": 7,
+        "recordType": "FLIGHT"
     },
     {
         "id": 8,
@@ -70,14 +70,5 @@
         "date": "2027-06-17T08:40:00",
         "startCity": "Munich",
         "endCity": "Bangkok"
-    },
-    {
-        "clientId": 6,
-        "airlineId": 3,
-        "date": "2026-09-16T00:00:00",
-        "startCity": "LHR",
-        "endCity": "GRU",
-        "id": 9,
-        "recordType": "FLIGHT"
     }
 ]

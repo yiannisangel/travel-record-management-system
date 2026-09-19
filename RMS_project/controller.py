@@ -88,13 +88,13 @@ class RecordController:
             )
 
         if record_type == "AIRLINE":
-            return self.store.update_airline(
+            return self.update_airline(
                 record_id,
                 data
             )
 
         if record_type == "FLIGHT":
-            return self.store.update_flight(
+            return self.update_flight(
                 record_id,
                 data
             )
@@ -172,19 +172,50 @@ class RecordController:
 
         return self.store.insert_client(client)
 
-    def update_client(
-        self,
-        record_id,
-        client
-    ):
+    def update_client(self, record_id, client):
         """
-        Update client.
+        Update client record.
         """
 
-        return self.store.update_client(
-            record_id,
-            client
+        Validator.validate_required(
+            "Client Name",
+            client["clientName"]
         )
+
+        Validator.validate_required(
+            "Phone Number",
+            client["phoneNumber"]
+        )
+
+        Validator.validate_uk_phone(
+            client["phoneNumber"]
+        )
+
+        Validator.validate_postcode(
+            client["zipCode"]
+        )
+
+        if client.get("email"):
+            Validator.validate_email(
+                client["email"]
+            )
+
+        existing_clients = [
+            existing
+            for existing in self.store.get_all_clients()
+            if existing["id"]!=record_id
+        ]
+
+        Validator.validate_duplicate(
+            client,
+            existing_clients,
+            [
+                "clientName",
+                "phoneNumber"
+            ]
+        )
+
+        return self.store.update_client(record_id, client)
 
     def delete_client(
         self,
@@ -222,6 +253,37 @@ class RecordController:
         )
 
         return self.store.insert_airline(
+            airline
+        )
+
+    def update_airline(
+        self,
+        record_id,
+        airline
+    ):
+        """
+        Update airline record.
+        """
+
+        Validator.validate_required(
+            "Airline Name",
+            airline["airlineName"]
+        )
+
+        existing_airlines = [
+            existing
+            for existing in self.store.get_all_airlines()
+            if existing["id"]!=record_id
+        ]
+
+        Validator.validate_duplicate(
+            airline,
+            existing_airlines,
+            ["airlineName"]
+        )
+
+        return self.store.update_airline(
+            record_id,
             airline
         )
 
@@ -274,6 +336,62 @@ class RecordController:
         )
 
         return self.store.insert_flight(
+            flight
+        )
+
+    def update_flight(
+        self,
+        record_id,
+        flight
+    ):
+        """
+        Update flight record.
+        """
+
+        Validator.validate_future_date(
+            flight["date"]
+        )
+
+        Validator.validate_city(
+            flight["startCity"]
+        )
+
+        Validator.validate_city(
+            flight["endCity"]
+        )
+
+        if not self.store.client_exists(
+            flight["clientId"]
+        ):
+            raise ValidationError(
+                "Client does not exist."
+            )
+
+        if not self.store.airline_exists(
+            flight["airlineId"]
+        ):
+            raise ValidationError(
+                "Airline does not exist."
+            )
+
+        existing_flights = [
+            existing
+            for existing in self.store.get_all_flights()
+            if existing["id"]!=record_id
+        ]
+
+        Validator.validate_duplicate(
+            flight,
+            existing_flights,
+            [
+                "clientId",
+                "airlineId",
+                "date"
+            ]
+        )
+
+        return self.store.update_flight(
+            record_id,
             flight
         )
 
